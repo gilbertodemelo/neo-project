@@ -16,8 +16,9 @@ iterator.
 
 You'll edit this file in Tasks 3a and 3c.
 """
+import itertools
 import operator
-
+from itertools import islice
 
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
@@ -72,6 +73,41 @@ class AttributeFilter:
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
+class DateFilter(AttributeFilter):
+    """ To filter date parameters """
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+
+class DistanceFilter(AttributeFilter):
+    """ To filter distance parameters """
+    @classmethod
+    def get(cls, approach):
+        return approach.distance
+
+
+class VelocityFilter(AttributeFilter):
+    """ To filter velocity parameters """
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+
+class DiameterFilter(AttributeFilter):
+    """ To filter diameter parameters """
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
+
+class HazardousFilter(AttributeFilter):
+    """ To filter hazardous parameters """
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.hazardous
+
+
 def create_filters(
         date=None, start_date=None, end_date=None,
         distance_min=None, distance_max=None,
@@ -109,7 +145,32 @@ def create_filters(
     :return: A collection of filters for use with `query`.
     """
     # TODO: Decide how you will represent your filters.
-    return ()
+
+    filters = []
+
+    for param, val in locals().items():
+        if param.lower() == 'date' and val:
+            filters.append((DateFilter(operator.eq, val)))
+        elif param.lower() == 'start_date' and val:
+            filters.append(DateFilter(operator.ge, val))
+        elif param.lower() == 'end_date' and val:
+            filters.append(DateFilter(operator.le, val))
+        elif param.lower() == 'distance_min' and val:
+            filters.append(DistanceFilter(operator.ge, val))
+        elif param.lower() == 'distance_max' and val:
+            filters.append(DistanceFilter(operator.le, val))
+        elif param.lower() == 'velocity_min' and val:
+            filters.append(DistanceFilter(operator.ge, val))
+        elif param.lower() == 'velocity_max' and val:
+            filters.append(DistanceFilter(operator.le, val))
+        elif param.lower() == 'diameter_min' and val:
+            filters.append(DiameterFilter(operator.ge, val))
+        elif param.lower() == 'diameter_max' and val:
+            filters.append(DiameterFilter(operator.le, val))
+        elif param.lower() == 'hazardous' and val is not None:
+            filters.append(HazardousFilter(operator.eq, val))
+
+    return filters
 
 
 def limit(iterator, n=None):
@@ -121,5 +182,13 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+    # Produce at most `n` values from the given iterator.
+    # if (n is None) or (n == 0):
+    #     return islice(iterator, None)
+    # else:
+    #     return islice(iterator, n)
+
+    if not n:
+        return iterator
+    else:
+        return itertools.islice(iterator, n)
