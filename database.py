@@ -119,12 +119,10 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
-        if filters:
-            for approach in self._approaches:
-                match = False in map(lambda x: x(approach), filters)
-                if not match:
-                    yield approach
-        else:
-            for approach in self._approaches:
+
+        for approach in self._approaches:
+            match = False in map(lambda x: x(approach), filters)
+            if not match:
                 yield approach
+
 

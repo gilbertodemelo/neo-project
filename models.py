@@ -89,6 +89,10 @@ class NearEarthObject:
         if type(approach) == CloseApproach:
             self.approaches.append(approach)
 
+    def serialize(self):
+        return {'designation': self.designation, 'name': self.name, 'diameter_km': self.diameter,
+                'potentially_hazardous': self.hazardous}
+
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
@@ -165,6 +169,10 @@ class CloseApproach:
 
         # Create an attribute for the referenced NEO, originally None.
         self.neo = self._designation
+
+    def serialize(self):
+        return {'datetime_utc': datetime_to_str(self.time), 'distance_au': self.distance,
+                'velocity_km_s': self.velocity}
 
     @property
     def designation(self):
