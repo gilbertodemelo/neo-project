@@ -85,7 +85,11 @@ class NearEarthObject:
         self.approaches = []
 
     def append_approach(self, approach):
-        """ To add info of a close approach of a NEO """
+        """ To add info of a close approach of a NEO
+         :param approach object
+         :return
+         """
+
         if type(approach) == CloseApproach:
             self.approaches.append(approach)
 
@@ -133,11 +137,9 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, **info):
         """Create a new `CloseApproach`.
-
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
         # Assign information from the arguments passed to the constructor
@@ -176,6 +178,8 @@ class CloseApproach:
 
     @property
     def designation(self):
+        """ Return a representation of the designation of the NEO
+        corresponding to this CloseApproach. """
         return self._designation
 
     @property

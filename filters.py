@@ -107,7 +107,6 @@ class HazardousFilter(AttributeFilter):
     def get(cls, approach):
         return approach.neo.hazardous
 
-
 def create_filters(
         date=None, start_date=None, end_date=None,
         distance_min=None, distance_max=None,
@@ -144,8 +143,6 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
-
     filters = []
 
     for param, val in locals().items():
@@ -182,12 +179,6 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # Produce at most `n` values from the given iterator.
-    # if (n is None) or (n == 0):
-    #     return islice(iterator, None)
-    # else:
-    #     return islice(iterator, n)
-
     if not n:
         return iterator
     else:
