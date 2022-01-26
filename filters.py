@@ -160,9 +160,9 @@ def create_filters(
         elif param.lower() == 'distance_max' and val:
             filters.append(DistanceFilter(operator.le, val))
         elif param.lower() == 'velocity_min' and val:
-            filters.append(DistanceFilter(operator.ge, val))
+            filters.append(VelocityFilter(operator.ge, val))
         elif param.lower() == 'velocity_max' and val:
-            filters.append(DistanceFilter(operator.le, val))
+            filters.append(VelocityFilter(operator.le, val))
         elif param.lower() == 'diameter_min' and val:
             filters.append(DiameterFilter(operator.ge, val))
         elif param.lower() == 'diameter_max' and val:
